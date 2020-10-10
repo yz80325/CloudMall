@@ -16,5 +16,8 @@
         <module>mall-member</module>
         <module>mall-order</module>
         <module>mall-product</module>
+        <module>renren-fast</module>
+        <module>renren-generator</module>
+        <module>mall-common</module>
     </modules>
 </project>

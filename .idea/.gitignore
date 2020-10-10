@@ -6,3 +6,13 @@
 /dataSources.local.xml
 # Editor-based HTTP Client requests
 /httpRequests/
+
+
+**/mvnw
+**/mvnw.cmd
+**/.mvn
+**/target/
+
+.idea
+
+**/.gitignore
