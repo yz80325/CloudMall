@@ -31,6 +31,13 @@ public class OrderController {
     @Autowired
     private OrderService orderService;
 
+
+    @RequestMapping("/test/order")
+    public R memberOrder(){
+        OrderEntity orderEntity=new OrderEntity();
+        orderEntity.setBillContent("aaaa");
+        return R.ok().put("order",Arrays.asList(orderEntity));
+    }
     /**
      * 列表
      */
