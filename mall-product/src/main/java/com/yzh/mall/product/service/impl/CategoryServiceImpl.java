@@ -48,7 +48,7 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryDao, CategoryEntity
 
         //查出一级分类的子分类
 
-        return entities;
+        return Level1;
     }
 
     private List<CategoryEntity> getChildrens(CategoryEntity root,List<CategoryEntity> all){
