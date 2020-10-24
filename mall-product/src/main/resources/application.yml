@@ -19,3 +19,15 @@
 #
 #server:
 #  port: 8001
+#mybatis-plus:
+#  global-config:
+#    db-config:
+#     logic-delete-value: 1
+#     logic-not-delete-value: 0
+#spring:
+#  cloud:
+#    alicloud:
+#      access-key: LTAI4GDuQMgfX4vXZpFVebjJ
+#      secret-key: PXzvwf8L6Rx0kLu1Zz0ItR5UlIJfK9
+#      oss:
+#        endpoint: oss-ap-northeast-1.aliyuncs.com
