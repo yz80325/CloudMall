@@ -8,11 +8,10 @@ spring:
             - Path=/api/product/**
           filters:
             - RewritePath=/api/(?<segment>.*),/$\{segment}
-#        - id: baidu_route
-#          uri: https://www.baidu.com
-#          predicates:
-#            - Query=url,baidu
-#       - id: qq_route
-#        uri: https://www.qq.com
-#          predicates:
-#           - Query=url,qq
+#        第三方
+        - id: third_party
+          uri: lb://third-party
+          predicates:
+            - Path=/api/thirdparty/**
+          filters:
+            - RewritePath=/api/thirdparty/(?<segment>.*),/$\{segment}

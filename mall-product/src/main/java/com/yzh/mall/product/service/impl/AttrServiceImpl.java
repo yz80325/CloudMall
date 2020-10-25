@@ -1,5 +1,6 @@
 package com.yzh.mall.product.service.impl;
 
+import com.yzh.mall.product.entity.AttrGroupEntity;
 import org.springframework.stereotype.Service;
 import java.util.Map;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
@@ -25,5 +26,6 @@ public class AttrServiceImpl extends ServiceImpl<AttrDao, AttrEntity> implements
 
         return new PageUtils(page);
     }
+
 
 }

@@ -1,12 +1,16 @@
 package com.yzh.mall.product.controller;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Map;
 
 //import org.apache.shiro.authz.annotation.RequiresPermissions;
+import com.yzh.common.valied.Insert;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,6 +22,7 @@ import com.yzh.mall.product.service.BrandService;
 import com.yzh.common.utils.PageUtils;
 import com.yzh.common.utils.R;
 
+import javax.validation.Valid;
 
 
 /**
@@ -61,9 +66,20 @@ public class BrandController {
     /**
      * 保存
      */
+
     @RequestMapping("/save")
  //   @RequiresPermissions("product:brand:save")
-    public R save(@RequestBody BrandEntity brand){
+    public R save(@Validated({Insert.class}) @RequestBody BrandEntity brand){
+/*        if (bindingResult.hasErrors()){
+            Map<String,String>map=new HashMap<>();
+            bindingResult.getFieldErrors().forEach((item)->
+            {
+               String messqage=item.getDefaultMessage();
+               String Filed=item.getField();
+               map.put(Filed,messqage);
+            });
+            return R.error(400,"数据不合法").put("data",map);
+        }*/
 		brandService.save(brand);
 
         return R.ok();
