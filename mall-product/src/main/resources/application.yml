@@ -27,7 +27,7 @@
 #spring:
 #  cloud:
 #    alicloud:
-#      access-key: LTAI4GDuQMgfX4vXZpFVebjJ
-#      secret-key: PXzvwf8L6Rx0kLu1Zz0ItR5UlIJfK9
+#      access-key:
+#      secret-key:
 #      oss:
 #        endpoint: oss-ap-northeast-1.aliyuncs.com
