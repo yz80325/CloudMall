@@ -2,6 +2,8 @@ package com.yzh.mall.product.service.impl;
 
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -55,6 +57,31 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryDao, CategoryEntity
     public void removeMenuById(List<Long> ids) {
         //TODO 删除时检查别的地方是否调用
         baseMapper.deleteBatchIds(ids);
+    }
+
+    /**
+     * 获取分类
+     * [父分类/子/孙]
+     *
+     * */
+    @Override
+    public Long[] getCategoryId(Long catelogId) {
+        List<Long> paths=new ArrayList<>();
+        List<Long> parenCatetId = getParenCatetId(catelogId, paths);
+        Collections.reverse(parenCatetId);
+        return paths.toArray(new Long[parenCatetId.size()]);
+    }
+
+    /**
+     * 寻找父类分类Id
+     * */
+    private List<Long> getParenCatetId(Long cateId,List<Long> paths){
+        paths.add(cateId);
+        CategoryEntity byId = this.getById(cateId);
+        if (byId.getParentCid()!=0){
+            getParenCatetId(byId.getParentCid(),paths);
+        }
+        return paths;
     }
 
     private List<CategoryEntity> getChildrens(CategoryEntity root,List<CategoryEntity> all){
