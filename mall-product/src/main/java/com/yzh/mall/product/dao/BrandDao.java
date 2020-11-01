@@ -13,5 +13,5 @@ import org.apache.ibatis.annotations.Mapper;
  */
 @Mapper
 public interface BrandDao extends BaseMapper<BrandEntity> {
-	
+	public String getBrandName(Long BrandId);
 }

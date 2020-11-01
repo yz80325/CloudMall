@@ -3,6 +3,7 @@ package com.yzh.mall.product.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.yzh.common.utils.PageUtils;
 import com.yzh.mall.product.entity.AttrEntity;
+import com.yzh.mall.product.vo.AttrVo;
 
 import java.util.Map;
 
@@ -17,5 +18,8 @@ public interface AttrService extends IService<AttrEntity> {
 
     PageUtils queryPage(Map<String, Object> params);
 
+    void saveAttr(AttrVo attr);
+
+    PageUtils queryBaseAttrPage(Map<String, Object> params, Long catelogId);
 }
 

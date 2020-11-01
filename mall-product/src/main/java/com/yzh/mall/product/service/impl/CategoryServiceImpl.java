@@ -1,5 +1,8 @@
 package com.yzh.mall.product.service.impl;
 
+import com.yzh.mall.product.entity.CategoryBrandRelationEntity;
+import com.yzh.mall.product.service.CategoryBrandRelationService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -17,10 +20,15 @@ import com.yzh.common.utils.Query;
 import com.yzh.mall.product.dao.CategoryDao;
 import com.yzh.mall.product.entity.CategoryEntity;
 import com.yzh.mall.product.service.CategoryService;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 
 @Service("categoryService")
 public class CategoryServiceImpl extends ServiceImpl<CategoryDao, CategoryEntity> implements CategoryService {
+
+    @Autowired
+    CategoryBrandRelationService categoryBrandRelationService;
 
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
@@ -70,6 +78,15 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryDao, CategoryEntity
         List<Long> parenCatetId = getParenCatetId(catelogId, paths);
         Collections.reverse(parenCatetId);
         return paths.toArray(new Long[parenCatetId.size()]);
+    }
+
+    @Transactional
+    @Override
+    public void updateCascade(CategoryEntity category) {
+        this.updateById(category);
+        if (!StringUtils.isEmpty(category.getName())){
+            categoryBrandRelationService.updateCategory(category.getCatId(),category.getName());
+        }
     }
 
     /**

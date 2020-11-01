@@ -15,6 +15,10 @@
         <result property="productUnit" column="product_unit"/>
         <result property="productCount" column="product_count"/>
     </resultMap>
+    <select id="getCateName" resultType="java.lang.String">
+        select name from pms_category
+        where cat_id=#{catelogId}
+    </select>
 
 
 </mapper>

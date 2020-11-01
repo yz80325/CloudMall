@@ -6,6 +6,11 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
+
+/**
+ * 分页
+ *
+ * */
 @Configuration
 @EnableTransactionManagement
 @MapperScan("com.yzh.mall.product.dao")

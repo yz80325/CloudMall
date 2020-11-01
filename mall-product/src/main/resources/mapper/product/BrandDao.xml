@@ -13,6 +13,10 @@
         <result property="firstLetter" column="first_letter"/>
         <result property="sort" column="sort"/>
     </resultMap>
+    <select id="getBrandName" resultType="java.lang.String" parameterType="java.lang.Long">
+        select name from pms_brand
+        where brand_id=#{BrandId}
+    </select>
 
 
 </mapper>
