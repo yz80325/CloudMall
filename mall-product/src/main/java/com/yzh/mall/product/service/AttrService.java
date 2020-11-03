@@ -3,8 +3,11 @@ package com.yzh.mall.product.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.yzh.common.utils.PageUtils;
 import com.yzh.mall.product.entity.AttrEntity;
+import com.yzh.mall.product.vo.AttrGroupRelationVo;
+import com.yzh.mall.product.vo.AttrResponseVo;
 import com.yzh.mall.product.vo.AttrVo;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -20,6 +23,16 @@ public interface AttrService extends IService<AttrEntity> {
 
     void saveAttr(AttrVo attr);
 
-    PageUtils queryBaseAttrPage(Map<String, Object> params, Long catelogId);
+    PageUtils queryBaseAttrPage(Map<String, Object> params, Long catelogId, String type);
+
+    AttrResponseVo getAttrResponseVo(Long attrId);
+
+    void updateAttrVo(AttrVo attr);
+
+    List<AttrEntity> getRelationShip(Long attrId);
+
+    void deleteRelation(AttrGroupRelationVo[] attrGroupRelation);
+
+    PageUtils getNoRelationAttr(Map<String, Object> params, Long attrgroupId);
 }
 

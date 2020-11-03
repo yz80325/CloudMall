@@ -13,4 +13,7 @@ public class AttrResponseVo extends AttrVo{
 
     private String groupName;
 
+    //[1.13.25]
+    private Long[] catelogPath;
+
 }

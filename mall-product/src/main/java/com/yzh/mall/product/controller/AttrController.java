@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.Map;
 
 //import org.apache.shiro.authz.annotation.RequiresPermissions;
+import com.yzh.mall.product.vo.AttrResponseVo;
 import com.yzh.mall.product.vo.AttrVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -28,10 +29,14 @@ public class AttrController {
     @Autowired
     private AttrService attrService;
 
-    //product/attr/base/list/{catelog}
-    @GetMapping("/base/list/{catelogId}")
-    public R baseAttrList(@RequestParam Map<String, Object> params,@PathVariable("catelogId") Long catelogId) {
-        PageUtils page =attrService.queryBaseAttrPage(params,catelogId);
+    //获取销售属性product/attr/sale/list/{catelog}
+
+    //获取通常属性product/attr/base/list/{catelog}
+    @GetMapping("/{attrType}/list/{catelogId}")
+    public R baseAttrList(@RequestParam Map<String, Object> params,
+                          @PathVariable("catelogId") Long catelogId,
+                          @PathVariable("attrType") String type) {
+        PageUtils page =attrService.queryBaseAttrPage(params,catelogId,type);
         return R.ok().put("page",page);
     }
 
@@ -54,8 +59,8 @@ public class AttrController {
     @RequestMapping("/info/{attrId}")
    // @RequiresPermissions("product:attr:info")
     public R info(@PathVariable("attrId") Long attrId){
-		AttrEntity attr = attrService.getById(attrId);
-
+		//AttrEntity attr = attrService.getById(attrId);
+        AttrResponseVo attr=attrService.getAttrResponseVo(attrId);
         return R.ok().put("attr", attr);
     }
 
@@ -75,8 +80,8 @@ public class AttrController {
      */
     @RequestMapping("/update")
  //   @RequiresPermissions("product:attr:update")
-    public R update(@RequestBody AttrEntity attr){
-		attrService.updateById(attr);
+    public R update(@RequestBody AttrVo attr){
+		attrService.updateAttrVo(attr);
 
         return R.ok();
     }
