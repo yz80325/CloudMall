@@ -6,9 +6,11 @@ import java.util.Map;
 
 //import org.apache.shiro.authz.annotation.RequiresPermissions;
 import com.yzh.mall.product.entity.AttrEntity;
+import com.yzh.mall.product.service.AttrAttrgroupRelationService;
 import com.yzh.mall.product.service.AttrService;
 import com.yzh.mall.product.service.CategoryService;
 import com.yzh.mall.product.vo.AttrGroupRelationVo;
+import com.yzh.mall.product.vo.AtteGroupWithAttrsVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -37,6 +39,21 @@ public class AttrGroupController {
 
     @Autowired
     AttrService attrService;
+
+    @Autowired
+    AttrAttrgroupRelationService attrAttrgroupRelationService;
+
+    @PostMapping("/attr/relation")
+    public R addRelation(@RequestBody List<AttrGroupRelationVo>vo){
+        attrAttrgroupRelationService.saveBatch(vo);
+        return R.ok();
+    }
+
+    @GetMapping("/{catelogId}/withattr")
+    public R getAttrGroupWithAttrs(@PathVariable("catelogId") Long catelogid){
+       List<AtteGroupWithAttrsVo> attrGroupVos=attrGroupService.getAttrGroupWithAttrsByCatelogId(catelogid);
+       return R.ok().put("data",attrGroupVos);
+    }
 
     @GetMapping("/{attrgroupId}/attr/relation")
     public R attrRelation(@PathVariable("attrgroupId")Long attrgroupId){

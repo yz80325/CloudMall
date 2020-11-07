@@ -2,12 +2,22 @@ spring:
   cloud:
     gateway:
       routes:
+#生产路由
         - id: product_route
           uri: lb://mall-product
           predicates:
             - Path=/api/product/**
           filters:
             - RewritePath=/api/(?<segment>.*),/$\{segment}
+
+#用户
+        - id: member_route
+          uri: lb://mall-member
+          predicates:
+            - Path=/api/member/**
+          filters:
+            - RewritePath=/api/(?<segment>.*),/$\{segment}
+
 #        第三方
         - id: third_party
           uri: lb://third-party

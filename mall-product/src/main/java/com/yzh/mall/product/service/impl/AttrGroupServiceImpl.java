@@ -1,7 +1,17 @@
 package com.yzh.mall.product.service.impl;
 
+import com.yzh.mall.product.entity.AttrEntity;
+import com.yzh.mall.product.service.AttrService;
+import com.yzh.mall.product.vo.AttrGroupRelationVo;
+import com.yzh.mall.product.vo.AtteGroupWithAttrsVo;
+import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
+
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -16,6 +26,9 @@ import org.springframework.util.StringUtils;
 
 @Service("attrGroupService")
 public class AttrGroupServiceImpl extends ServiceImpl<AttrGroupDao, AttrGroupEntity> implements AttrGroupService {
+
+    @Autowired
+    AttrService attrService;
 
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
@@ -52,6 +65,20 @@ public class AttrGroupServiceImpl extends ServiceImpl<AttrGroupDao, AttrGroupEnt
         }
     }
 
+    @Override
+    public List<AtteGroupWithAttrsVo> getAttrGroupWithAttrsByCatelogId(Long catelogid) {
+        List<AttrGroupEntity> catelog_group = this.list(new QueryWrapper<AttrGroupEntity>().eq("catelog_id", catelogid));
+
+        //查出所有属性
+        List<AtteGroupWithAttrsVo> collect = catelog_group.stream().map(group -> {
+            AtteGroupWithAttrsVo attrsVo = new AtteGroupWithAttrsVo();
+            BeanUtils.copyProperties(group, attrsVo);
+            List<AttrEntity> relationShip = attrService.getRelationShip(attrsVo.getAttrGroupId());
+            attrsVo.setAttrEntities(relationShip);
+            return attrsVo;
+        }).collect(Collectors.toList());
+        return collect;
+    }
 
 
 }
