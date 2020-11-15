@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Map;
 
 //import org.apache.shiro.authz.annotation.RequiresPermissions;
-import com.yzh.mall.product.fegin.OrderFeginService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -15,7 +14,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.yzh.mall.product.entity.CategoryEntity;
 import com.yzh.mall.product.service.CategoryService;
-import com.yzh.common.utils.PageUtils;
 import com.yzh.common.utils.R;
 
 
@@ -33,13 +31,7 @@ public class CategoryController {
     @Autowired
     private CategoryService categoryService;
 
-    @Autowired
-    OrderFeginService orderFeginService;
 
-    @RequestMapping("/test")
-    public R testfiegin(){
-        return R.ok().put("success",orderFeginService.memberOrder().get("order"));
-    }
     /**
      * 查出所有分类以及子分类，以及数据结构
      */

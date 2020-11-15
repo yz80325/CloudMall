@@ -5,7 +5,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 
-@EnableFeignClients(basePackages = "com.yzh.mall.product.fegin")
+@EnableFeignClients(basePackages = "com.yzh.mall.product.feign")
 @EnableDiscoveryClient
 @SpringBootApplication
 public class ProductApplication {

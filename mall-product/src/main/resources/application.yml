@@ -31,3 +31,6 @@
 #      secret-key:
 #      oss:
 #        endpoint: oss-ap-northeast-1.aliyuncs.com
+spring:
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
