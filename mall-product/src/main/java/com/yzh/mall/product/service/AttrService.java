@@ -3,6 +3,7 @@ package com.yzh.mall.product.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.yzh.common.utils.PageUtils;
 import com.yzh.mall.product.entity.AttrEntity;
+import com.yzh.mall.product.entity.ProductAttrValueEntity;
 import com.yzh.mall.product.vo.AttrGroupRelationVo;
 import com.yzh.mall.product.vo.AttrResponseVo;
 import com.yzh.mall.product.vo.AttrVo;
@@ -34,5 +35,6 @@ public interface AttrService extends IService<AttrEntity> {
     void deleteRelation(AttrGroupRelationVo[] attrGroupRelation);
 
     PageUtils getNoRelationAttr(Map<String, Object> params, Long attrgroupId);
+
 }
 

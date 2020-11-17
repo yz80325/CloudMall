@@ -4,9 +4,7 @@ import com.yzh.common.constant.ProductConstant;
 import com.yzh.mall.product.dao.AttrAttrgroupRelationDao;
 import com.yzh.mall.product.dao.AttrGroupDao;
 import com.yzh.mall.product.dao.CategoryDao;
-import com.yzh.mall.product.entity.AttrAttrgroupRelationEntity;
-import com.yzh.mall.product.entity.AttrGroupEntity;
-import com.yzh.mall.product.entity.CategoryEntity;
+import com.yzh.mall.product.entity.*;
 import com.yzh.mall.product.service.CategoryService;
 import com.yzh.mall.product.vo.AttrGroupRelationVo;
 import com.yzh.mall.product.vo.AttrResponseVo;
@@ -25,7 +23,6 @@ import com.yzh.common.utils.PageUtils;
 import com.yzh.common.utils.Query;
 
 import com.yzh.mall.product.dao.AttrDao;
-import com.yzh.mall.product.entity.AttrEntity;
 import com.yzh.mall.product.service.AttrService;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
@@ -226,6 +223,7 @@ public class AttrServiceImpl extends ServiceImpl<AttrDao, AttrEntity> implements
         PageUtils pageUtils = new PageUtils(page);
         return pageUtils;
     }
+
 
 
 }
