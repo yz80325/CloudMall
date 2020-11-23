@@ -32,6 +32,17 @@ public class SpuInfoController {
     @Autowired
     private SpuInfoService spuInfoService;
 
+
+    /**
+     * 列表
+     */
+    @RequestMapping("/{spuId}/up")
+    //@RequiresPermissions("product:spuinfo:list")
+    public R list(@PathVariable Long spuId){
+        spuInfoService.up(spuId);
+
+        return R.ok();
+    }
     /**
      * 列表
      */

@@ -37,6 +37,7 @@
             <artifactId>lombok</artifactId>
             <version>1.18.12</version>
         </dependency>
+
         <!-- https://mvnrepository.com/artifact/org.apache.httpcomponents/httpcore -->
         <dependency>
             <groupId>org.apache.httpcomponents</groupId>
