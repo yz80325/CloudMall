@@ -2,6 +2,7 @@ package com.yzh.mall.product.service.impl;
 
 import com.yzh.mall.product.entity.CategoryBrandRelationEntity;
 import com.yzh.mall.product.service.CategoryBrandRelationService;
+import com.yzh.mall.product.vo.Catelog2Vo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -93,6 +94,37 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryDao, CategoryEntity
     public List<CategoryEntity> getCategory1() {
         List<CategoryEntity> entities = baseMapper.selectList(new QueryWrapper<CategoryEntity>().eq("parent_cid", 0));
         return entities;
+    }
+
+    @Override
+    public Map<String, List<Catelog2Vo>> getCatalogJson() {
+        //获取1级分类
+        List<CategoryEntity> category1 = getCategory1();
+
+        //获取Map<String,List<Catalog2Vo>>
+        Map<String, List<Catelog2Vo>> collect = category1.stream().collect(Collectors.toMap(k -> k.getCatId().toString(), v -> {
+            //查询出对应的2及分类
+            List<CategoryEntity> entities = baseMapper.selectList(new QueryWrapper<CategoryEntity>().eq("parent_cid", v.getCatId()));
+            //封装
+            List<Catelog2Vo> catelog2Vos = null;
+            if (entities != null) {
+                catelog2Vos = entities.stream().map(item -> {
+                    Catelog2Vo catelog2Vo = new Catelog2Vo(v.getCatId().toString(), null, item.getCatId().toString(), item.getName());
+                    //找当前二级分类的三级分类
+                    List<CategoryEntity> level3 = baseMapper.selectList(new QueryWrapper<CategoryEntity>().eq("parent_cid", item.getCatId()));
+                    if (level3!=null){
+                        List<Catelog2Vo.Catalog3Vo> collect3 = level3.stream().map(l3 -> {
+                            Catelog2Vo.Catalog3Vo catalog3Vo = new Catelog2Vo.Catalog3Vo(l3.getCatId().toString(), l3.getCatId().toString(), l3.getName());
+                            return catalog3Vo;
+                        }).collect(Collectors.toList());
+                        catelog2Vo.setCatalog3List(collect3);
+                    }
+                    return catelog2Vo;
+                }).collect(Collectors.toList());
+            }
+            return catelog2Vos;
+        }));
+        return collect;
     }
 
     /**

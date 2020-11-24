@@ -15,7 +15,10 @@ public class Catelog2Vo {
     private String id;
     private String name;
 
-    private static class Catalog3Vo{
+    @NoArgsConstructor
+    @AllArgsConstructor
+    @Data
+    public static class Catalog3Vo{
         private String catalog2Id;
         private String id;
         private String name;
