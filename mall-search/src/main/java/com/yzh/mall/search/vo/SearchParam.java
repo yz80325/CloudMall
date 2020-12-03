@@ -11,12 +11,12 @@ public class SearchParam {
     //排序
     private String sort;
     //查询是否有货
-    private Integer hasStock;
+    private Integer hasStock=1;
     //价格区间
     private String skuPrice;
     //品牌Id
     private List<Long> brandId;
     //属性
     private List<String> attrs;
-    private Integer pageNum;
+    private Integer pageNum=1;
 }
