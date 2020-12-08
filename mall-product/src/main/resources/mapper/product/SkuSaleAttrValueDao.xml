@@ -12,6 +12,17 @@
         <result property="attrValue" column="attr_value"/>
         <result property="attrSort" column="attr_sort"/>
     </resultMap>
+    <select id="getSaleAttrsBySpuId" resultType="com.yzh.mall.product.vo.SkuItemSaleAttrVo">
+SELECT
+ssav.attr_id attrId,
+ssav.attr_name attrName,
+GROUP_CONCAT(DISTINCT ssav.attr_value) attrsValues
+FROM
+pms_sku_info info
+LEFT JOIN pms_sku_sale_attr_value ssav ON ssav.sku_id=info.sku_id
+WHERE info.spu_id=#{spuId}
+GROUP BY ssav.attr_id,ssav.attr_name
+    </select>
 
 
 </mapper>

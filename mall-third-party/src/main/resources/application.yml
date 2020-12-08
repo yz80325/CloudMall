@@ -5,3 +5,10 @@ spring:
         server-addr: 127.0.0.1:8848
   application:
     name: third-party
+  alicloud:
+    sms:
+      host: https://feginesms.market.alicloudapi.com
+      path: /codeNotice
+      appcode:
+      skin: 1
+      sign: 1

@@ -1,23 +1,27 @@
 package com.yzh.mall.search.service.Imp;
 
 import com.alibaba.fastjson.JSON;
+import com.yzh.common.to.AttrResponseVo;
 import com.yzh.common.to.es.SkuEsModel;
-import com.yzh.common.utils.Query;
+
+import com.yzh.common.utils.R;
 import com.yzh.mall.search.config.MallElasticSearchConfig;
 import com.yzh.mall.search.constant.EsContant;
+import com.yzh.mall.search.entity.BrandEntity;
+import com.yzh.mall.search.feign.ProductFeignService;
 import com.yzh.mall.search.service.MallSearchService;
 import com.yzh.mall.search.vo.SearchParam;
 import com.yzh.mall.search.vo.SearchResult;
-import org.apache.lucene.search.TotalHits;
+
 import org.apache.lucene.search.join.ScoreMode;
 import org.elasticsearch.action.search.SearchRequest;
-import org.elasticsearch.action.search.SearchRequestBuilder;
+
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.RestHighLevelClient;
 import org.elasticsearch.index.query.*;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.SearchHits;
-import org.elasticsearch.search.aggregations.Aggregation;
+
 import org.elasticsearch.search.aggregations.AggregationBuilders;
 import org.elasticsearch.search.aggregations.bucket.nested.NestedAggregationBuilder;
 import org.elasticsearch.search.aggregations.bucket.nested.ParsedNested;
@@ -28,14 +32,16 @@ import org.elasticsearch.search.aggregations.bucket.terms.TermsAggregationBuilde
 import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.elasticsearch.search.fetch.subphase.highlight.HighlightBuilder;
 import org.elasticsearch.search.fetch.subphase.highlight.HighlightField;
-import org.elasticsearch.search.fetch.subphase.highlight.Highlighter;
+
 import org.elasticsearch.search.sort.SortOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.ui.Model;
+
 import org.springframework.util.StringUtils;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -48,9 +54,11 @@ public class MallSearchServiceImp implements MallSearchService {
     @Autowired
     RestHighLevelClient client;
 
+    @Autowired
+    ProductFeignService productFeignService;
+
     @Override
     public SearchResult search(SearchParam param) {
-        SearchResult searchResult=null;
         //准备检索请求
         SearchRequest searchRequest=buildSearchRequest(param);
         SearchResponse response;
@@ -147,7 +155,67 @@ public class MallSearchServiceImp implements MallSearchService {
         //总页码
         int totalPage=(int)totalHits%EsContant.PRODUCT_PAGESIZE==0?(int)totalHits%EsContant.PRODUCT_PAGESIZE:((int)totalHits%EsContant.PRODUCT_PAGESIZE)+1;
         searchResult.setTotalPage(totalPage);
+
+        if (param.getAttrs()!=null&&param.getAttrs().size()>0){
+            //面包
+            List<SearchResult.NavVo> naves = param.getAttrs().stream().map(attr -> {
+                //分析每一个传来的参数值
+                SearchResult.NavVo navVo = new SearchResult.NavVo();
+                String[] s = attr.split("_");
+                navVo.setNavValue(s[1]);
+                R info = productFeignService.info(Long.parseLong(s[0]));
+                if (info.getCode() == 0) {
+                    AttrResponseVo attrResponseVo = (AttrResponseVo) info.get("attr");
+                    if (attrResponseVo != null) {
+                        navVo.setNavName(attrResponseVo.getAttrName());
+                    }
+                } else {
+                    navVo.setNavName(s[0]);
+                }
+                String replace = replaceQueryString(param, attr,"attr");
+                navVo.setLink("http://search.yzhmall.com/list.html?" + replace);
+
+                return navVo;
+
+            }).collect(Collectors.toList());
+            searchResult.setNavVo(naves);
+        }
+
+        //品牌封装
+        if(param.getBrandId()!=null&&param.getBrandId().size()>0){
+            List<SearchResult.NavVo> navVos = searchResult.getNavVo();
+            SearchResult.NavVo navVo = new SearchResult.NavVo();
+            navVo.setNavName("品牌");
+            R infoByIds = productFeignService.getInfoByIds(param.getBrandId());
+            if(infoByIds.getCode()==0){
+                List<BrandEntity> brandEntities= (List<BrandEntity>) infoByIds.get("brands");
+                StringBuffer buffer=new StringBuffer();
+                String replace="";
+                for (BrandEntity brandEntity : brandEntities) {
+                    buffer= buffer.append(brandEntity.getName() + ";");
+                     replace= replaceQueryString(param,brandEntity.getBrandId()+"","brandId");
+                }
+                navVo.setNavValue(buffer.toString());
+                navVo.setLink("http://search.yzhmall.com/list.html?" + replace);
+            }
+
+            navVos.add(navVo);
+        }
+
         return searchResult;
+    }
+
+    private String replaceQueryString(SearchParam param, String attr,String key) {
+        String encode = null;
+        try {
+            encode = URLEncoder.encode(attr, "UTF-8");
+            encode=encode.replace("+","%20");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        //取消掉面包屑跳转路径
+        String replace = param.getQueryString().replace("&"+key+"=" + encode, "");
+        return replace;
     }
 
     /**

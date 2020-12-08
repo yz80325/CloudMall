@@ -12,6 +12,28 @@
         <result property="icon" column="icon"/>
         <result property="catelogId" column="catelog_id"/>
     </resultMap>
+    <resultMap id="SpuItemBaseAttrGroupVo" type="com.yzh.mall.product.vo.SpuItemBaseAttrGroupVo">
+        <result property="groupName" column="attr_group_name"/>
+        <collection property="attrs" ofType="com.yzh.mall.product.vo.SkuBaseAttrVo">
+            <result property="attrName" column="attr_name"/>
+            <result property="attrsValue" column="attr_value"/>
+        </collection>
+    </resultMap>
+    <select id="getAttrGroupWithAttrsBySpuId"
+            resultMap="SpuItemBaseAttrGroupVo">
+        SELECT
+         pav.spu_id,
+         ag.attr_group_name,
+         ag.attr_group_id,
+        arr.attr_id,
+attr.attr_name,
+pav.attr_value
+FROM `pms_attr_group` ag
+LEFT JOIN `pms_attr_attrgroup_relation` arr ON arr.attr_group_id=ag.attr_group_id
+LEFT JOIN `pms_attr` attr ON attr.attr_id=arr.attr_id
+LEFT JOIN `pms_product_attr_value` pav ON pav.attr_id=attr.attr_id
+where ag.catelog_id=#{catalogId} and pav.spu_id=#{spuId}
+    </select>
 
 
 </mapper>

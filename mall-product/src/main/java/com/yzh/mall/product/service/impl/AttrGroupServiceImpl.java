@@ -2,10 +2,13 @@ package com.yzh.mall.product.service.impl;
 
 import com.yzh.mall.product.entity.AttrEntity;
 import com.yzh.mall.product.service.AttrService;
-import com.yzh.mall.product.vo.AttrGroupRelationVo;
+import com.yzh.mall.product.service.SkuImagesService;
 import com.yzh.mall.product.vo.AtteGroupWithAttrsVo;
+import com.yzh.mall.product.vo.SkuItemVo;
+import com.yzh.mall.product.vo.SpuItemBaseAttrGroupVo;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -78,6 +81,14 @@ public class AttrGroupServiceImpl extends ServiceImpl<AttrGroupDao, AttrGroupEnt
             return attrsVo;
         }).collect(Collectors.toList());
         return collect;
+    }
+
+    @Override
+    public List<SpuItemBaseAttrGroupVo> getAttrGroupWithAttrsBySpuId(Long spuId, Long catalogId) {
+        //查出当前spu对应得信息
+        AttrGroupDao baseMapper = this.baseMapper;
+        List<SpuItemBaseAttrGroupVo> vos = baseMapper.getAttrGroupWithAttrsBySpuId(spuId,catalogId);
+        return vos;
     }
 
 

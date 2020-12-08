@@ -2,6 +2,7 @@ package com.yzh.mall.product.controller;
 
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 //import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -11,11 +12,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.yzh.mall.product.entity.BrandEntity;
 import com.yzh.mall.product.service.BrandService;
@@ -40,6 +37,7 @@ public class BrandController {
     private BrandService brandService;
 
 
+
     /**
      * 列表
      */
@@ -62,7 +60,14 @@ public class BrandController {
 
         return R.ok().put("brand", brand);
     }
-
+    /**
+     * 获取复数id的
+     */
+    @GetMapping("/infos")
+    public R getInfoByIds(@RequestParam("brandIds")List<Long>brandIds){
+        List<BrandEntity> brandEntityList=brandService.selectInfoByIds(brandIds);
+        return R.ok().put("brands",brandEntityList);
+    }
     /**
      * 保存
      */

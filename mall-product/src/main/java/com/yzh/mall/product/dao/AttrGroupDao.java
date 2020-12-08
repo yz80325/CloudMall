@@ -2,7 +2,13 @@ package com.yzh.mall.product.dao;
 
 import com.yzh.mall.product.entity.AttrGroupEntity;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.yzh.mall.product.vo.SkuItemVo;
+import com.yzh.mall.product.vo.SpuItemBaseAttrGroupVo;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
+import org.springframework.web.bind.annotation.PathVariable;
+
+import java.util.List;
 
 /**
  * 属性分组
@@ -13,5 +19,6 @@ import org.apache.ibatis.annotations.Mapper;
  */
 @Mapper
 public interface AttrGroupDao extends BaseMapper<AttrGroupEntity> {
-	
+
+    List<SpuItemBaseAttrGroupVo> getAttrGroupWithAttrsBySpuId(@Param("catalogId") Long catalogId,@Param("spuId") Long spuId);
 }

@@ -38,11 +38,15 @@ spring:
         - id: mall_host_route
           uri: lb://mall-product
           predicates:
-            - Host=yzhmall.com
+            - Host=yzhmall.com,item.yzhmall.com
 
 #        查询
         - id: mall_search_route
           uri: lb://mall-search
           predicates:
             - Host=search.yzhmall.com
-
+#        权限
+        - id: mall_auth_route
+          uri: lb://mall-auth-server
+          predicates:
+            - Host=auth.yzhmall.com

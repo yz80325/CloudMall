@@ -4,6 +4,7 @@ package com.yzh.mall.search.vo;
 import com.yzh.common.to.es.SkuEsModel;
 import lombok.Data;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -22,6 +23,16 @@ public class SearchResult {
     private List<CatalogVo>catalogs;
     //属性
     private List<AttrVo>attrs;
+
+    //面包屑
+    private List<NavVo> NavVo=new ArrayList<>();
+    @Data
+    public static class NavVo{
+        private String NavName;
+        private String NavValue;
+        private String link;
+    }
+
     @Data
     public static class BrandVo{
         private Long brandId;

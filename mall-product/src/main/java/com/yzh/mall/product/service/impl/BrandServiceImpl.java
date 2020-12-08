@@ -3,6 +3,8 @@ package com.yzh.mall.product.service.impl;
 import com.yzh.mall.product.service.CategoryBrandRelationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 import java.util.Map;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -52,6 +54,13 @@ public class BrandServiceImpl extends ServiceImpl<BrandDao, BrandEntity> impleme
             //TODO 更新其他表
         }
 
+    }
+
+    @Override
+    public List<BrandEntity> selectInfoByIds(List<Long> brandIds) {
+        List<BrandEntity> brandEntityList = baseMapper.selectList(new QueryWrapper<BrandEntity>().in("brandId", brandIds));
+
+        return brandEntityList;
     }
 
 }

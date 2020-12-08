@@ -47,11 +47,6 @@ public class IndexController {
         return map;
     }
 
-    @GetMapping("/hello")
-    public String Hello(Model model){
-
-        return "hello";
-    }
 
     @GetMapping("/write")
     public void Write(){
