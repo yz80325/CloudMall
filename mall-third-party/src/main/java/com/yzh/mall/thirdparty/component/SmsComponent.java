@@ -24,7 +24,8 @@ public class SmsComponent {
 
     public void sendSmsCode(String phone,String param){
         String urlSend = host + path + "?sign=" + sign + "&skin=" + skin+ "&param=" + param+ "&phone=" + phone; // 【5】拼接请求链接
-        try {
+        System.out.println(urlSend);
+/*        try {
             URL url = new URL(urlSend);
             HttpURLConnection httpURLCon = (HttpURLConnection) url.openConnection();
             httpURLCon.setRequestProperty("Authorization", "APPCODE " + appcode);// 格式Authorization:APPCODE
@@ -58,6 +59,6 @@ public class SmsComponent {
         } catch (Exception e) {
             // 打开注释查看详细报错异常信息
             // e.printStackTrace();
-        }
+        }*/
     }
 }

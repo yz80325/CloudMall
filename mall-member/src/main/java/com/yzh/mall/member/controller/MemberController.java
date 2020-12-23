@@ -4,12 +4,14 @@ import java.util.Arrays;
 import java.util.Map;
 
 //import org.apache.shiro.authz.annotation.RequiresPermissions;
+import com.yzh.common.exception.BizCodeEnum;
+import com.yzh.mall.member.exception.PhoneExistException;
+import com.yzh.mall.member.exception.UserNameExistException;
+import com.yzh.mall.member.vo.MemberLoginVo;
+import com.yzh.mall.member.vo.MemberRegistVo;
+import com.yzh.mall.member.vo.SocialUser;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.yzh.mall.member.entity.MemberEntity;
 import com.yzh.mall.member.service.MemberService;
@@ -42,7 +44,45 @@ public class MemberController {
         return R.ok().put("page", page);
     }
 
+    @PostMapping("/regist")
+    public R regist(@RequestBody MemberRegistVo memberRegistVo){
+        try {
+            memberService.regist(memberRegistVo);
+        }catch (PhoneExistException e){
+            return R.error(BizCodeEnum.PHONE_EXIST_EXCEPTION.getCode(), BizCodeEnum.PHONE_EXIST_EXCEPTION.getMessage());
+        }catch (UserNameExistException e){
+            return R.error(BizCodeEnum.USER_EXIST_EXCEPTION.getCode(), BizCodeEnum.USER_EXIST_EXCEPTION.getMessage());
+        }
 
+        return R.ok();
+    }
+
+    /**
+     * 社交登录
+     * @param socialUser
+     * @return
+     */
+    @PostMapping("/oauth2/login")
+    public R oauthlogin(@RequestBody SocialUser socialUser) throws Exception {
+        MemberEntity memberEntity=memberService.login(socialUser);
+        if (memberEntity!=null){
+            return R.ok().put("member",memberEntity);
+        }else {
+            return R.error(BizCodeEnum.USERNAME_PASSWORD_EXCEPTION.getCode(),BizCodeEnum.USERNAME_PASSWORD_EXCEPTION.getMessage());
+        }
+
+    }
+
+    @PostMapping("/login")
+    public R login(@RequestBody MemberLoginVo memberLoginVo){
+        MemberEntity memberEntity=memberService.login(memberLoginVo);
+        if (memberEntity!=null){
+            return R.ok().put("member",memberEntity);
+        }else {
+            return R.error(BizCodeEnum.USERNAME_PASSWORD_EXCEPTION.getCode(),BizCodeEnum.USERNAME_PASSWORD_EXCEPTION.getMessage());
+        }
+
+    }
     /**
      * 信息
      */

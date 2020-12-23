@@ -50,3 +50,19 @@ spring:
           uri: lb://mall-auth-server
           predicates:
             - Host=auth.yzhmall.com
+#        购物车
+        - id: mall_cart_route
+          uri: lb://mall-cart
+          predicates:
+            - Host=cart.yzhmall.com
+#        订单
+        - id: mall_order_route
+          uri: lb://mall-order
+          predicates:
+            - Host=order.yzhmall.com
+
+        #        秒杀
+        - id: mall_seckill_route
+          uri: lb://mall-seckill
+          predicates:
+            - Host=seckill.yzhmall.com

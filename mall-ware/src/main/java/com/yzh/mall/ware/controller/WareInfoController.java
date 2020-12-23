@@ -1,15 +1,15 @@
 package com.yzh.mall.ware.controller;
 
+import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.Map;
 
 //import org.apache.shiro.authz.annotation.RequiresPermissions;
+import com.yzh.mall.ware.service.WareSkuService;
+import com.yzh.mall.ware.vo.FareVo;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.yzh.mall.ware.entity.WareInfoEntity;
 import com.yzh.mall.ware.service.WareInfoService;
@@ -30,6 +30,29 @@ import com.yzh.common.utils.R;
 public class WareInfoController {
     @Autowired
     private WareInfoService wareInfoService;
+
+    @Autowired
+    WareSkuService wareSkuService;
+
+
+    /**
+     * 运费
+     *
+     * @param id
+     * @return
+     */
+    @GetMapping("/fare")
+    public R getFare(@RequestParam("attrId") Long id){
+        FareVo fare =wareInfoService.getFare(id);
+        return R.ok().put("data",fare);
+    }
+
+    @GetMapping("/test")
+    //@RequiresPermissions("ware:wareinfo:list")
+    public void test(){
+        wareSkuService.test();
+
+    }
 
     /**
      * 列表

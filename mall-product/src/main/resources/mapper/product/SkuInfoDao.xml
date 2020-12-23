@@ -17,6 +17,9 @@
         <result property="price" column="price"/>
         <result property="saleCount" column="sale_count"/>
     </resultMap>
+    <select id="getPrice" resultType="java.math.BigDecimal">
+        SELECT price FROM `pms_sku_info` WHERE sku_id=#{skuId}
+    </select>
 
 
 </mapper>

@@ -5,7 +5,9 @@ import java.util.List;
 import java.util.Map;
 
 //import org.apache.shiro.authz.annotation.RequiresPermissions;
+import com.yzh.mall.ware.vo.LockStockResult;
 import com.yzh.mall.ware.vo.SkuHasStockVo;
+import com.yzh.mall.ware.vo.WareSkuLockVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,6 +32,18 @@ public class WareSkuController {
     private WareSkuService wareSkuService;
 
 
+    @PostMapping("/lock/order")
+    public R orderLockStock(@RequestBody WareSkuLockVo skuLockVo){
+        boolean results=false;
+        try {
+            results=wareSkuService.lockStock(skuLockVo);
+        }catch (Exception e){
+        }
+        if (results==true){
+            return R.ok();
+        }
+        return R.error(21000,"库存不足");
+    }
     /**
      * 查询Sku是否有库存
      */

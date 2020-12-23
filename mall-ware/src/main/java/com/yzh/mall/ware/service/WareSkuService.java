@@ -1,9 +1,13 @@
 package com.yzh.mall.ware.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.yzh.common.to.OrderTo;
+import com.yzh.common.to.mq.StockLockedTo;
 import com.yzh.common.utils.PageUtils;
 import com.yzh.mall.ware.entity.WareSkuEntity;
+import com.yzh.mall.ware.vo.LockStockResult;
 import com.yzh.mall.ware.vo.SkuHasStockVo;
+import com.yzh.mall.ware.vo.WareSkuLockVo;
 
 import java.util.List;
 import java.util.Map;
@@ -23,5 +27,13 @@ public interface WareSkuService extends IService<WareSkuEntity> {
 
     List<SkuHasStockVo> getSkusHasStack(List<Long> ids);
 
+    boolean lockStock(WareSkuLockVo skuLockVo);
+
+    void test();
+
+
+    void unLockStock(StockLockedTo stockLockedTo);
+
+    void unLockStock(OrderTo orderTo);
 }
 

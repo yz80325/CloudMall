@@ -1,9 +1,13 @@
 package com.yzh.mall.order;
 
 import org.mybatis.spring.annotation.MapperScan;
+import org.springframework.amqp.rabbit.annotation.EnableRabbit;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
+import org.springframework.cloud.openfeign.EnableFeignClients;
+import org.springframework.session.data.redis.config.annotation.web.http.EnableRedisHttpSession;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 /*
 * 1,整合MyBatis-Plus
@@ -19,9 +23,14 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
   * 2,配置Mybatis-Plus：
   *   1）,使用MapperScan
   *   2),告诉系统文件在哪里
+  *
 *
 * */
+@EnableRabbit
+@EnableRedisHttpSession
 @MapperScan("com.yzh.mall.order.dao")
+@EnableTransactionManagement
+@EnableFeignClients
 @EnableDiscoveryClient
 @SpringBootApplication
 public class OrderApplication {

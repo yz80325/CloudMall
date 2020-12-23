@@ -3,7 +3,7 @@
 
 <mapper namespace="com.yzh.mall.product.dao.SkuSaleAttrValueDao">
 
-	<!-- 可根据自己的需求，是否要使用 -->
+    <!-- 可根据自己的需求，是否要使用 -->
     <resultMap type="com.yzh.mall.product.entity.SkuSaleAttrValueEntity" id="skuSaleAttrValueMap">
         <result property="id" column="id"/>
         <result property="skuId" column="sku_id"/>
@@ -22,6 +22,12 @@ pms_sku_info info
 LEFT JOIN pms_sku_sale_attr_value ssav ON ssav.sku_id=info.sku_id
 WHERE info.spu_id=#{spuId}
 GROUP BY ssav.attr_id,ssav.attr_name
+    </select>
+    <select id="selectAttrAsString" resultType="java.lang.String">
+SELECT CONCAT(attr_name,":",attr_value)
+FROM
+pms_sku_sale_attr_value
+WHERE sku_id=#{skuId}
     </select>
 
 

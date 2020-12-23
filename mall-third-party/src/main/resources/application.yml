@@ -9,6 +9,6 @@ spring:
     sms:
       host: https://feginesms.market.alicloudapi.com
       path: /codeNotice
-      appcode:
+      appcode: 175feb298ae640cd990510697cee7138
       skin: 1
       sign: 1

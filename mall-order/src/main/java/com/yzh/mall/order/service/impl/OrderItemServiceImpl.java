@@ -1,7 +1,15 @@
 package com.yzh.mall.order.service.impl;
 
+import com.rabbitmq.client.Channel;
+import com.yzh.mall.order.entity.OrderReturnReasonEntity;
+import org.springframework.amqp.core.Message;
+import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.stereotype.Service;
+
+import java.io.IOException;
 import java.util.Map;
+import java.util.Queue;
+
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -25,5 +33,19 @@ public class OrderItemServiceImpl extends ServiceImpl<OrderItemDao, OrderItemEnt
 
         return new PageUtils(page);
     }
+
+    @RabbitListener(queues = {"java.news"})
+    public void recieve(Message message, OrderReturnReasonEntity orderReturnReasonEntity, Channel channel){
+        System.out.println(message);
+        long deliveryTag = message.getMessageProperties().getDeliveryTag();
+        //签收消息
+        try {
+            channel.basicAck(deliveryTag,false);
+        } catch (IOException e) {
+
+        }
+    }
+
+
 
 }
